@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Page</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+
+
+</head>
+
+<body>
+    Flask APP
+    <div> hello world</div>
+    <canvas id="myChart"></canvas>
+    <script type="module">
+        import { hello } from "../static/utility.js"
+        let res = await hello()
+    </script>
+    <script defer>
+            (async function getdata() {
+                data = await fetch('/api/aircond/co2').then(res => { return res.json() })
+                console.log(data, ' in html script with async/await')
+            })()
+    </script>
+
+
+
+    <script>
+        fetch('/api/aircond/co2')
+            .then(res => {
+                return res.json()
+            }).then(res => {
+                console.log(res, ' in html script with Promise/callback function')
+
+                const labels = [
+                    'January',
+                    'February',
+                    'March',
+                    'April',
+                    'May',
+                    'June',
+                ];
+
+                const data = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'co2',
+                        backgroundColor: 'rgb(255, 99, 132)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        data: res.co2,
+                    }]
+                };
+
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {}
+                };
+                const myChart = new Chart(
+                    document.getElementById('myChart'),
+                    config
+                );
+            })
+
+    </script>
+</body>
+
+</html>
